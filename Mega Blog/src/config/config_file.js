@@ -1,4 +1,4 @@
-const appwrite={
+const conf={
   appwriteurl: String(import.meta.env.VITE_APPWRITE_URL),
   appwriteprojectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
   appwritedbId: String(import.meta.env.VITE_APPWRITE_DB_ID),
@@ -6,4 +6,4 @@ const appwrite={
   appwritebucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
 
 }
-export default appwrite
+export default conf
