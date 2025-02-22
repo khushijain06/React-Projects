@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react'
-import {useDispatch } from 'react-redux'
+import useDispatch  from 'react-redux'
 import {login,logout} from './store/authSlice';
-import authService, { AuthService } from './appwrite/Auth';
-import './App.css'
+import authService from './appwrite/Auth';
+import {Header , Footer} from './components/index'
 
 function App() {
   const [loading, setloading] = useState(true);
@@ -19,9 +19,18 @@ function App() {
       })
       .finally(()=>setloading(false))
   },[])
-  return !loading(
-    <>
-    </>
+  return !loading?(
+    <div className="min-h-screen flex flex-wrap content-between bg-gray-400"> 
+    <div className='w-full block'>
+      <Header/>
+      <main>
+       {/* <Outlet/> */}
+      </main>
+      <Footer/>
+      </div>
+    </div>
+  ):(
+      null
   )
 }
 
