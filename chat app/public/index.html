@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #messages { height: 300px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; }
+        .message { margin: 5px 0; padding: 5px; border-radius: 5px; }
+        .uma { background-color: #d1e7ff; text-align: left; }
+        .radha { background-color: #ffd1dc; text-align: right; }
+    </style>
+</head>
+<body>
+ 
+    <h2>Chat App (Uma & Radha)</h2>
+    <select id="user">
+        <option value="Uma">Uma</option>
+        <option value="Radha">Radha</option>
+    </select>
+    
+    <div id="messages"></div>
+    
+    <input type="text" id="message" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+ 
+    <script>
+        const socket = io();
+        const messagesDiv = document.getElementById("messages");
+ 
+        function sendMessage() {
+            const user = document.getElementById("user").value;
+            const message = document.getElementById("message").value;
+            if (message.trim() !== "") {
+                socket.emit("chatMessage", { user, message });
+                document.getElementById("message").value = "";
+            }
+        }
+ 
+        socket.on("chatMessage", (data) => {
+            const msgDiv = document.createElement("div");
+            msgDiv.className = `message ${data.user.toLowerCase()}`;
+            msgDiv.innerHTML = `<strong>${data.user}:</strong> ${data.message}`;
+            messagesDiv.appendChild(msgDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    </script>
+ 
+</body>
+</html>
+ 
