@@ -1,0 +1,96 @@
+import React, { useState, useEffect } from "react";
+
+const LocationApp = () => {
+    const [location, setLocation] = useState(null);
+    const [error, setError] = useState(null);
+
+    const API_KEY = "1358d9914bec4f23a30b1765e57f1f67";
+
+    useEffect(() => {
+        getLocation();
+    }, []);
+
+    const getLocation = () => {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    console.log(`Latitude: ${lat}, Longitude: ${lon}`);
+                    fetchLocationName(lat, lon);
+                },
+                (error) => {
+                    console.error("Geolocation error:", error.message);
+                    setError(`Location error: ${error.message}`);
+                    setLocation(null);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 30000,
+                    maximumAge: 0,
+                }
+            );
+        } else {
+            setError("Geolocation not supported by your browser.");
+        }
+    };
+
+    const fetchLocationName = async (lat, lon) => {
+        try {
+            const response = await fetch(
+                `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${API_KEY}`
+            );
+            const data = await response.json();
+            console.log("Geocoding API Response:", data);
+
+            if (data.results && data.results.length > 0) {
+                const components = data.results[0].components;
+
+                const city = 
+                    components.city || 
+                    components.town || 
+                    components.village || 
+                    components.hamlet || 
+                    components.suburb || 
+                    components.locality || 
+                    components.neighbourhood || 
+                    "Unknown City";
+
+                const state = components.state || components.province || "Unknown State";
+                const country = components.country || "Unknown Country";
+
+                console.log("Location Components:", components);
+
+                if (city !== "Unknown City" || state !== "Unknown State") {
+                    setLocation(`${city}, ${state}, ${country}`);
+                    setError(null);
+                } else {
+                    setError("Incomplete location data received.");
+                    setLocation(null);
+                }
+            } else {
+                console.error("No results found in the API response:", data);
+                setError("Unable to fetch location name.");
+            }
+        } catch (error) {
+            console.error("Error fetching location name:", error);
+            setError("Error fetching location name.");
+        }
+    };
+
+    return (
+            <div className=" p-4 bg-white rounded shadow-md w-80 text-center">
+                {location ? (
+                    <p className="text-green-600">
+                        <strong>Your Location:</strong> {location}
+                    </p>
+                ) : (
+                    <p className="text-gray-500">Fetching your exact location...</p>
+                )}
+
+                {error && <p className="text-red-500 mt-2">{error}</p>}
+            </div>
+    );
+};
+
+export default LocationApp;

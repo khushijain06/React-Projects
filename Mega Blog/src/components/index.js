@@ -7,6 +7,7 @@ import  Button from './Button'
 import Input from './Header/Input'
 import Select from './Header/Select'
 import PostCard from  './PostCard'
+import RTE from './RTE'
 export {
-    Header,Footer,Logo,Container,LogoutBtn,Button,Select,PostCard,Input
+    RTE,Header,Footer,Logo,Container,LogoutBtn,Button,Select,PostCard,Input
 }
