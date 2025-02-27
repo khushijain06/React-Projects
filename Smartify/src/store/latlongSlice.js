@@ -1,43 +1,4 @@
-/*
-import { createSlice } from "@reduxjs/toolkit";
-const initialState={
-    lon:12,
-    lat:78
-}
-const longlatSlice =createSlice({
-    name:"latlong",
-    initialState,
-    reducers:{
-        getLocation : (state) => {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                         state.lat = position.coords.latitude;
-                         state.lon = position.coords.longitude;
-                        console.log(`Latitude: ${state.lat}, Longitude: ${state.lon}`);
-                    },
-                    (error) => {
-                        console.error("Geolocation error:", error.message);
-                        //setError(`Location error: ${error.message}`);
-                   //     setLocation(null);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 30000,
-                        maximumAge: 0,
-                    }
-                );
-            } else {
-               console.log("Geolocation not supported by your browser.");
-            }
-        }
-    
-    }
-})
-export const {getLocation} = longlatSlice.actions;
-export default longlatSlice.reducer;
 
-*/
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 // Async thunk to get user's location

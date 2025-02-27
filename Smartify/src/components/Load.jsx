@@ -4,48 +4,23 @@ import  {getLocation} from "../store/latlongSlice"
 
 const LocationApp = () => {
     const dispatch =  useDispatch();
-    const { lat, lon,loading, error } = useSelector((state) => state.latlong);
+    const { lat, lon } = useSelector((state) => state.latlong);
     const [location, setLocation] = useState(null);
     const [Error, setError] = useState(null);
 
     const API_KEY = "1358d9914bec4f23a30b1765e57f1f67";
    
-  //   const lat = useSelector(state=> state.latlong.lat)
-   //  const long = useSelector(state=>state.latlong.lon)
+
     useEffect(() => {
        dispatch(getLocation())
     }, [dispatch]);
-    
+
     useEffect(() => {
         if (lat && lon) {
             fetchLocationName(lat, lon);
         }
     }, [lat, lon]);
-   /* const getLocation = () => {
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-                    console.log(`Latitude: ${lat}, Longitude: ${lon}`);
-                    fetchLocationName(lat, lon);
-                },
-                (error) => {
-                    console.error("Geolocation error:", error.message);
-                    setError(`Location error: ${error.message}`);
-                    setLocation(null);
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 30000,
-                    maximumAge: 0,
-                }
-            );
-        } else {
-            setError("Geolocation not supported by your browser.");
-        }
-    };
-*/
+
     const fetchLocationName = async (lat, lon) => {
         try {
             const response = await fetch(
