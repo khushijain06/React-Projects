@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
+import {useSelector,useDispatch} from 'react-redux'
+import  {getLocation} from "../store/latlongSlice"
 
 const LocationApp = () => {
+    const dispatch =  useDispatch();
+    const { lat, lon,loading, error } = useSelector((state) => state.latlong);
     const [location, setLocation] = useState(null);
-    const [error, setError] = useState(null);
+    const [Error, setError] = useState(null);
 
     const API_KEY = "1358d9914bec4f23a30b1765e57f1f67";
-
+   
+  //   const lat = useSelector(state=> state.latlong.lat)
+   //  const long = useSelector(state=>state.latlong.lon)
     useEffect(() => {
-        getLocation();
-    }, []);
-
-    const getLocation = () => {
+       dispatch(getLocation())
+    }, [dispatch]);
+    
+    useEffect(() => {
+        if (lat && lon) {
+            fetchLocationName(lat, lon);
+        }
+    }, [lat, lon]);
+   /* const getLocation = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -34,7 +45,7 @@ const LocationApp = () => {
             setError("Geolocation not supported by your browser.");
         }
     };
-
+*/
     const fetchLocationName = async (lat, lon) => {
         try {
             const response = await fetch(
@@ -45,7 +56,7 @@ const LocationApp = () => {
 
             if (data.results && data.results.length > 0) {
                 const components = data.results[0].components;
-
+                console.log(`${lat} . ${lon}`)
                 const city = 
                     components.city || 
                     components.town || 
@@ -88,7 +99,7 @@ const LocationApp = () => {
                     <p className="text-gray-500">Fetching your exact location...</p>
                 )}
 
-                {error && <p className="text-red-500 mt-2">{error}</p>}
+                {Error && <p className="text-red-500 mt-2">{Error}</p>}
             </div>
     );
 };
