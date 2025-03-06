@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
-import useDispatch  from 'react-redux'
+import {useDispatch }  from 'react-redux'
 import {login,logout} from './store/authSlice';
+import { Outlet } from 'react-router-dom';
 import authService from './appwrite/Auth';
 import {Header , Footer} from './components/index'
 
@@ -24,14 +25,13 @@ function App() {
     <div className='w-full block'>
       <Header/>
       <main>
-       {/* <Outlet/> */}
+       <Outlet/> 
       </main>
       <Footer/>
       </div>
     </div>
-  ):(
+  ):
       null
-  )
 }
 
 export default App

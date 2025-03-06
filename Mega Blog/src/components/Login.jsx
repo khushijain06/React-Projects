@@ -66,7 +66,7 @@ function Login() {
                     {...register("password",{
                         required:true,
                     })}       /> 
-                    <Button type="submit">login</Button>
+                    <Button type="submit" className="w-full">Sign in</Button>
           </div>
         </form>
       </div>

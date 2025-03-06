@@ -2,10 +2,13 @@ import  { useState, useEffect } from "react";
 import {useSelector,useDispatch} from 'react-redux'
 import  {getLocation} from "../store/latlongSlice"
 
-const LocationApp = () => {
+
+const Location = () => {
     const dispatch =  useDispatch();
     const { lat, lon } = useSelector((state) => state.latlong);
-    const [location, setLocation] = useState(null);
+    const [city, setcity] = useState(null);
+    const [state, setstate] = useState(null);
+    const [country, setcountry] = useState(null);
     const [Error, setError] = useState(null);
 
     const API_KEY = "1358d9914bec4f23a30b1765e57f1f67";
@@ -27,12 +30,12 @@ const LocationApp = () => {
                 `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${API_KEY}`
             );
             const data = await response.json();
-            console.log("Geocoding API Response:", data);
+          //  console.log("Geocoding API Response:", data);
 
             if (data.results && data.results.length > 0) {
                 const components = data.results[0].components;
                 console.log(`${lat} . ${lon}`)
-                const city = 
+                 setcity(
                     components.city || 
                     components.town || 
                     components.village || 
@@ -40,19 +43,15 @@ const LocationApp = () => {
                     components.suburb || 
                     components.locality || 
                     components.neighbourhood || 
-                    "Unknown City";
-
-                const state = components.state || components.province || "Unknown State";
-                const country = components.country || "Unknown Country";
+                    "Unknown City"
+                 )
+                setstate ( components.state || components.province || "Unknown State");
+                setcountry (components.country || "Unknown Country")
 
                 console.log("Location Components:", components);
 
-                if (city !== "Unknown City" || state !== "Unknown State") {
-                    setLocation(`${city}, ${state}, ${country}`);
-                    setError(null);
-                } else {
-                    setError("Incomplete location data received.");
-                    setLocation(null);
+                if (city === "Unknown City" || state === "Unknown State") {
+                    setError("Incomplete location data received.")
                 }
             } else {
                 console.error("No results found in the API response:", data);
@@ -65,18 +64,23 @@ const LocationApp = () => {
     };
 
     return (
-            <div className=" p-4 bg-white rounded shadow-md w-80 text-center">
-                {location ? (
-                    <p className="text-green-600">
-                        <strong>Your Location:</strong> {location}
-                    </p>
-                ) : (
-                    <p className="text-gray-500">Fetching your exact location...</p>
-                )}
-
-                {Error && <p className="text-red-500 mt-2">{Error}</p>}
-            </div>
-    );
+        <div className="text-center mt-6">
+          {city || state || country ? (
+            <h1 className="text-4xl font-bold text-white">
+              {city && `${city}, `}
+              {state && `${state}, `}
+              {country}
+            </h1>
+          ) : (
+            <p className="text-gray-400 text-lg italic animate-pulse">
+              Fetching your exact location...
+            </p>
+          )}
+      
+          {Error && <p className="text-red-500 mt-2 text-lg font-semibold">{Error}</p>}
+        </div>
+      );
+      
 };
 
-export default LocationApp;
+export default Location;

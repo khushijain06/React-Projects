@@ -4,12 +4,12 @@ import {Button,Input,Select,RTE} from '../components/index'
 import appwriteservice from '../appwrite/config'
 import { useNavigate} from "react-router-dom";
 import { useSelector } from "react-redux";
-import { set } from "express/lib/application";
+
 function PostForm({post}){
     const {register,handleSubmit,watch,setValue,control,getValues} = useForm({
         defaultValues:{
             tittle:post?.tittle || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content : post?.content || '',
             status: post?.status || 'active',
         }
@@ -18,7 +18,7 @@ function PostForm({post}){
     const userData = useSelector(state => state.user.userData)
     const submit = async(data)=>{
         if(post){
-            const file = data.image[0]?appwriteservice.uploadFile(data.image[0]):null
+            const file = data.image[0]? await appwriteservice.uploadFile(data.image[0]):null
             if(file){
                 appwriteservice.deleteFile(post.featuredImage)
             }
@@ -30,11 +30,11 @@ function PostForm({post}){
                 }
         }
         else {
-            const file = data.appwriteservice.uploadFile(data.image[0])
+            const file = await appwriteservice.uploadFile(data.image[0])
             if(file) {
                 const fileId = file.$id
                 data.featuredImage=fileId
-                await appwriteservice.createPost({...data,userId: userData.$id})
+                const dbPost = await appwriteservice.createPost({...data,userId: userData.$id})
                 if(dbPost){
                     navigate(`/post/${dbPost.$id}`)
                 }
