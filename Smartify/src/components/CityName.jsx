@@ -64,12 +64,13 @@ const Location = () => {
     };
 
     return (
-        <div className="text-center mt-6">
+        <div className="text-center text-white  mt-6">
+          <p className="mb-2">You are in </p>
           {city || state || country ? (
-            <h1 className="text-4xl font-bold text-white">
-              {city && `${city}, `}
+            <h1 className="text-4xl font-bold ">
+               {city && `${city}, `}
               {state && `${state}, `}
-              {country}
+              {country} 👋
             </h1>
           ) : (
             <p className="text-gray-400 text-lg italic animate-pulse">

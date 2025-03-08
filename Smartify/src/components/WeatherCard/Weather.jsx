@@ -1,6 +1,6 @@
 import React from "react";
 import Mausam from "./Mausam";
-import Aqi from "./Aqi";
+import Aqi from "../PollutionCard/Aqi";
 
 function Weather({ parentstyles, childstyles }) {
   return (
@@ -13,7 +13,6 @@ function Weather({ parentstyles, childstyles }) {
         </span>
         </div>
         <Mausam styles={childstyles} />
-        <Aqi styles={childstyles} />
       </div>
     </>
   );
