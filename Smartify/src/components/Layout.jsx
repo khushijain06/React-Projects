@@ -1,6 +1,7 @@
 import App from "../App";
 import Weather from "./WeatherCard/Weather";
 import Pollution from "./PollutionCard/Pollution";
+import News from "./NewsCard/News";
 
 const parentCardStyle =
   " flex items-start  justify-center items-center text-white bg-slate-950 p-7 rounded-xl border-1 border-sky-400 shadow-[0_0_9px_theme('colors.sky.400')] space-x-4 w-fit m-auto hover:scale-102  hover:border-2 transition-transform duration-300 ease-in-out mt-21";
@@ -23,14 +24,14 @@ function Layout() {
           {" "}
           Pollution{" "}
         </a>
+        <a href="#news" className="mx-4">
+          News
+        </a>
       </nav>
       <div className="mt-16">
         {" "}
         {/* Margin to avoid content hiding behind fixed navbar */}
-        <section
-          id="home"
-          className="m-30 flex justify-center items-center"
-        >
+        <section id="home" className="m-30 flex justify-center items-center">
           <App />
         </section>
         <section
@@ -50,6 +51,9 @@ function Layout() {
             parentstyles={parentCardStyle}
             childstyles={childCardStyle}
           />
+        </section>
+        <section>
+          <News parentstyles={parentCardStyle} childstyles={childCardStyle} />
         </section>
       </div>
     </div>
